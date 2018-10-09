@@ -58,33 +58,39 @@ instance ReplicatedAsPayload NoteStatus where
         p                     -> TaskStatus <$> fromPayload p
 
 {-
-OGDL version from future:
+YAML version from future:
 
-    import Time Day
-    opaque Status  -- TODO enum
-    opaque NoteStatus  -- TODO transparent enum?
-
-    struct_lww Tracked
-        fields
-            provider    String
-            source      String
-            externalId  String
-            url         String
-
-    struct_lww Contact
-        fields
-            status  Status
-            name    RgaString
-        Haskell field_prefix contact_
-
-    struct_lww Note
-        fields
-            status  NoteStatus
-            text    RgaString
-            start   Day
-            end     Option Day
-            tracked Option Tracked
-        Haskell field_prefix note_
+    import:
+      Time: Day
+    types:
+      - kind: opaque
+        name: Status  # TODO enum
+      - kind: opaque
+        name: NoteStatus  # TODO transparent enum?
+      - kind: struct_lww
+        name: Tracked
+        fields:
+          provider:   String
+          source:     String
+          externalId: String
+          url:        String
+      - kind: struct_lww
+        name: Contact
+        fields:
+          status: Status
+          name:   RgaString
+        Haskell:
+          field_prefix: contact_
+      - kind: struct_lww
+        name: Note
+        fields:
+          status:   NoteStatus
+          text:     RgaString
+          start:    Day
+          end:      {Option: Day}
+          tracked:  {Option: Tracked}
+        Haskell:
+          field_prefix: note_
 -}
 
 $(let
